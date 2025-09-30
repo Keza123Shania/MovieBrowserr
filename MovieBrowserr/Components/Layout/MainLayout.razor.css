@@ -1,25 +1,98 @@
-.page-container {
+.main-container {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    height: 100vh;
 }
 
-.top-nav-bar {
-    background-color: #1f1f1f;
-    border-bottom: 1px solid #333;
-    padding: 0.5rem 2rem;
-    height: 60px;
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background-color: rgba(18, 18, 24, 0.8);
+    backdrop-filter: blur(5px);
+    border-right: 1px solid #2a2a38;
+    padding: 1.5rem;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.top-header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* This pushes the two items apart */
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: rgba(18, 18, 24, 0.8);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid #2a2a38;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
+
+.search-container {
+    flex-grow: 1;
+    max-width: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: #888;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    background-color: #2a2a38;
+    border: 1px solid #3a3a48;
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+    .search-input::placeholder {
+        color: #888;
+    }
+
+.user-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.mood-btn {
+    background-color: #f3ca20;
+    color: #121218;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.profile-icons {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #121218;
+}
+
+    .avatar:not(:first-child) {
+        margin-left: -10px;
+    }
 
 .content {
     padding: 2rem;
-    flex-grow: 1; /* Allows the main content area to take up all remaining vertical space */
-}
-.top-right-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* This adds some nice spacing between the About and Login links */
+    flex-grow: 1;
 }

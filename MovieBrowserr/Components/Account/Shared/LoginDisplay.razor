@@ -1,0 +1,30 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <a href="Account/Manage">Hello, @context.User.Identity?.Name!</a>
+        <form action="Account/Logout" method="post">
+            <AntiforgeryToken />
+            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+            <button type="submit" class="nav-link">
+                <span class="bi bi-arrow-bar-left" aria-hidden="true"></span> Logout
+            </button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <a href="Account/Register">Register</a>
+        <a href="Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject]
+    private NavigationManager Navigation { get; set; } = default!;
+
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+    }
+}
+
+

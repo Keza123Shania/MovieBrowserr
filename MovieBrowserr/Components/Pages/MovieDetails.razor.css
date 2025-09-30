@@ -1,0 +1,127 @@
+﻿.detail-container {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.detail-poster {
+    width: 300px;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.detail-info h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.release-year {
+    font-weight: 300;
+    color: #aaa;
+}
+
+.meta-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+    color: #aaa;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.action-btn {
+    background-color: #2a2a38;
+    color: #e0e0e0;
+    border: 1px solid #3a3a48;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+    .action-btn:hover {
+        background-color: #3a3a48;
+    }
+
+    .action-btn.active {
+        background-color: #f3ca20;
+        color: #121218;
+        border-color: #f3ca20;
+    }
+
+.separator {
+    color: #555;
+}
+
+.genre-badge {
+    background-color: #2a2a38;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    color: #e0e0e0;
+}
+
+.rating {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.rating-value {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #f3ca20;
+}
+
+.overview {
+    line-height: 1.6;
+    color: #ccc;
+}
+
+/* Similar Movies */
+.similar-movies-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #2a2a38;
+}
+
+    .similar-movies-section h3 {
+        margin-bottom: 1.5rem;
+    }
+
+.similar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #2a2a38;
+    transition: transform 0.2s ease-in-out;
+}
+
+.movie-card:hover img {
+    transform: scale(1.05);
+}
+
+.no-poster {
+    width: 100%;
+    height: 240px;
+    background-color: #2a2a38;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    color: #aaa;
+}

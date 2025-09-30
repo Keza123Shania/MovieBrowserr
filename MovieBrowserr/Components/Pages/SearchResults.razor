@@ -1,0 +1,47 @@
+﻿@page "/search/{Query}"
+@using MovieBrowserr.Models
+@inject HttpClient Http
+@rendermode InteractiveServer
+
+<PageTitle>Search Results for "@Query"</PageTitle>
+
+<h3>Search Results for "@Query"</h3>
+
+@if (isLoading)
+{
+    <p><em>Loading results...</em></p>
+}
+else if (movies != null && movies.Any())
+{
+    <div class="movie-grid">
+        @foreach (var movie in movies)
+        {
+            <a href="@($"movie/{movie.Id}")" class="movie-link">
+                <div class="movie-card">
+                    @if (!string.IsNullOrEmpty(movie.PosterPath))
+                    {
+                        <img src="@($"https://image.tmdb.org/t/p/w500/{movie.PosterPath}")" alt="@movie.Title" />
+                    }
+                    else
+                    {
+                        <div class="no-poster">@movie.Title</div>
+                    }
+                </div>
+            </a>
+        }
+    </div>
+
+    @if (totalPages > 1)
+    {
+        <div class="pagination">
+            <button disabled="@(currentPage == 1)" @onclick="() => SearchMovies(currentPage - 1)">&laquo; Previous</button>
+            <span>Page @currentPage of @totalPages</span>
+            <button disabled="@(currentPage == totalPages)" @onclick="() => SearchMovies(currentPage + 1)">Next &raquo;</button>
+        </div>
+    }
+}
+else
+{
+    <p><em>No movies found for "@Query". Try another search!</em></p>
+}
+

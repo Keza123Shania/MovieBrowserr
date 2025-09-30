@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
-using MovieBrowser.Models; // Make sure this using is here
+using MovieBrowserr.Models; // Make sure this using is here
 
-namespace MovieBrowser.Models
+namespace MovieBrowserr.Models
 {
     public class MovieSearchResult
     {

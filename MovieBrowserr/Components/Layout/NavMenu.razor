@@ -1,10 +1,21 @@
-﻿<div class="top-menu-container">
-    <a class="logo" href="">🎬 My Movie Mood</a>
-    <div class="nav-links">
-        
+﻿<div class="nav-container">
+    <a class="logo" href="">
+        <img src="https://storyset.com/illustration/film-rolls/pana.png" alt="My Movie Mood Logo" style="height: 30px; margin-right: 10px;" />
+        My Movie Mood
+    </a>
+
+    <div class="nav-section">
+        <h6 class="nav-heading">Discover</h6>
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">Home</NavLink>
+        <NavLink class="nav-link" href="genres">Genres</NavLink>
+        <NavLink class="nav-link" href="moods">Moods</NavLink>
     </div>
-    <div class="user-controls">
-        <AboutModal />
-        
+
+    <div class="nav-section">
+        <h6 class="nav-heading">My Movies</h6>
+        <NavLink class="nav-link" href="watchlist">Watchlist</NavLink>
+        <NavLink class="nav-link" href="favorites">Favorites</NavLink>
     </div>
+
 </div>
+

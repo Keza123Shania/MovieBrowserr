@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MovieBrowser.Models
+// Corrected the namespace to match your project
+namespace MovieBrowserr.Models
 {
     public class MovieDetail
     {
@@ -20,10 +21,9 @@ namespace MovieBrowser.Models
         public List<Genre> Genres { get; set; } = new();
 
         [JsonPropertyName("runtime")]
-        public int Runtime { get; set; } 
+        public int Runtime { get; set; }
 
         [JsonPropertyName("vote_average")]
         public double VoteAverage { get; set; }
     }
 }
-    

@@ -1,38 +1,46 @@
-.top-menu-container {
+.nav-container {
     display: flex;
-    justify-content: space-between; /* Pushes items to the edges */
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    gap: 2.5rem;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: white;
     text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
-.nav-links {
+.nav-section {
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-heading {
+    font-size: 0.8rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
 }
 
 .nav-link {
     color: #aaa;
     text-decoration: none;
     font-size: 1rem;
-    padding: 5px 10px;
+    padding: 0.5rem 0;
     border-radius: 4px;
+    transition: color 0.2s, background-color 0.2s;
 }
+
+    .nav-link:hover {
+        color: white;
+    }
 
     .nav-link.active {
         color: white;
-        background-color: #333;
+        font-weight: 500;
     }
-
-/* We need to re-style the About button to fit the new theme */
-.user-controls .nav-link {
-    background-color: #3a3a3a;
-    color: white;
-    border: 1px solid #555;
-}

@@ -1,0 +1,41 @@
+﻿@page "/favorites"
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@rendermode InteractiveServer
+
+<PageTitle>My Favorites</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <h1>My Favorites</h1>
+        @if (isLoading)
+        {
+            <p><em>Loading your favorite movies...</em></p>
+        }
+        else if (favoriteMovies.Any())
+        {
+            <div class="movie-grid">
+                @foreach (var item in favoriteMovies)
+                {
+                    <div class="movie-card-container">
+                        <a href="@($"movie/{item.MovieId}")" class="movie-link">
+                            <img src="@item.PosterPath" alt="@item.Title" />
+                        </a>
+                        <button class="remove-btn" @onclick="() => RemoveMovie(item.Id)">Remove</button>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>You haven't marked any movies as favorites yet. Find a movie you love and add it!</p>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h2>Please log in</h2>
+        <p>You need to be logged in to view your favorite movies.</p>
+        <a href="Account/Login">Log in now</a>
+    </NotAuthorized>
+</AuthorizeView>

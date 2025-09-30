@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MovieBrowser.Models
+namespace MovieBrowserr.Models
 {
     public class Genre
     {
