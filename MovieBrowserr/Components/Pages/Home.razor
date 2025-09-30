@@ -1,0 +1,206 @@
+﻿@page "/"
+@using MovieBrowser.Models
+@inject HttpClient Http
+@rendermode InteractiveServer
+
+<PageTitle>Movie Browser</PageTitle>
+
+
+
+<div class="search-box">
+    <input @bind="searchTerm" @bind:event="oninput" @onkeyup="HandleKeyUp" class="search-input" placeholder="Enter a movie title..." />
+    <button @onclick="PerformNewSearch" class="search-button" disabled="@isLoading">
+        @if (isLoading)
+        {
+            <span>Searching...</span>
+        }
+        else
+        {
+            <span>Search</span>
+        }
+    </button>
+</div>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    // NEW: An area to display errors
+    <p class="error-message">@errorMessage</p>
+}
+
+@if (isLoading)
+{
+    // NEW: A loading indicator
+    <p><em>Loading results...</em></p>
+}
+else if (movies == null)
+{
+    <p><em>Type a movie title and click Search to begin!</em></p>
+}
+else
+{
+    @if (!movies.Any())
+    {
+        <p><em>No movies found for "@searchTerm". Try another title!</em></p>
+    }
+    else
+    {
+        <div class="movie-grid">
+            @foreach (var movie in movies)
+            {
+                <a href="@($"movie/{movie.Id}")" class="movie-link">
+                    <div class="movie-card">
+                        <img src="@($"https://image.tmdb.org/t/p/w500/{movie.PosterPath}")" alt="@movie.Title" />
+                        <h5>@movie.Title</h5>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+}
+@* NEW: Pagination Controls *@
+@if (totalPages > 1)
+{
+    <div class="pagination">
+        <button disabled="@(currentPage == 1)" class="pagination-button" @onclick="() => SearchMovies(currentPage - 1)">Previous</button>
+
+        <span>Page @currentPage of @totalPages</span>
+
+        <button disabled="@(currentPage == totalPages)" class="pagination-button" @onclick="() => SearchMovies(currentPage + 1)">Next</button>
+    </div>
+}
+
+<style>
+    
+    h1{
+        text-align: center;
+    }
+
+    .search-box {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 2rem;
+        
+    }
+
+    .search-input {
+        flex-grow: 1;
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 8px;
+
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        background-color:mediumslateblue;
+        color: white;
+    }
+
+    .movie-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+
+    .movie-card {
+        text-align: center;
+    }
+
+        .movie-card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+
+    .movie-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        margin-top: 2rem;
+}
+
+    .pagination-button {
+        padding: 10px 20px;
+        border-radius: 8px;
+        background-color: mediumpurple;
+        color: white;
+    }
+</style>
+
+@code {
+    private string searchTerm = "";
+    private List<Movie> movies = new();
+
+    // NEW: State for pagination
+    private int currentPage = 1;
+    private int totalPages = 1;
+
+    private bool isLoading = false;
+    private string errorMessage = null;
+
+    // !!! IMPORTANT: Replace this with your actual API Key !!!
+    private string apiKey = "01e36c2ef3033c34ac637091981746c3";
+
+    private async Task HandleKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await PerformNewSearch();
+        }
+    }
+
+    // NEW: A method to start a new search, which always resets to page 1
+    private async Task PerformNewSearch()
+    {
+        currentPage = 1;
+        await SearchMovies(currentPage);
+    }
+
+    // UPDATED: This method now accepts a page number
+    private async Task SearchMovies(int pageNumber)
+    {
+        isLoading = true;
+        errorMessage = null;
+        currentPage = pageNumber;
+
+        if (string.IsNullOrWhiteSpace(searchTerm))
+        {
+            isLoading = false;
+            movies = new List<Movie>();
+            totalPages = 1;
+            return;
+        }
+
+        // UPDATED: The URL now includes the page number
+        var url = $"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&query={searchTerm}&page={currentPage}";
+
+        try
+        {
+            var searchResult = await Http.GetFromJsonAsync<MovieSearchResult>(url);
+            movies = searchResult?.Results ?? new List<Movie>();
+            totalPages = searchResult?.TotalPages ?? 1; // Store the total number of pages
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+            movies = new List<Movie>();
+            totalPages = 1;
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

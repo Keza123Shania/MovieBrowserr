@@ -1,0 +1,158 @@
+﻿@page "/movie/{MovieId:int}"
+@using MovieBrowser.Models
+@inject HttpClient Http
+@rendermode InteractiveServer
+
+@if (movie == null)
+{
+    <p><em>Loading movie details...</em></p>
+}
+else
+{
+    <div class="movie-details-container">
+        <div class="movie-poster">
+            <img src="@($"https://image.tmdb.org/t/p/w500/{movie.PosterPath}")" alt="@movie.Title" />
+        </div>
+        <div class="movie-info">
+            <h1>@movie.Title <span>(@movie.ReleaseDate.Substring(0, 4))</span></h1>
+
+            <div class="info-badges">
+                <span>@movie.Runtime minutes</span>
+                @foreach (var genre in movie.Genres)
+                {
+                    <span class="genre-badge">@genre.Name</span>
+                }
+            </div>
+
+            <div class="rating">
+                <strong>Rating:</strong> @movie.VoteAverage.ToString("0.0") / 10
+            </div>
+
+            <h3>Overview</h3>
+            <p>@movie.Overview</p>
+
+            <a href="/" class="back-link">&larr; Back to Search</a>
+        </div>
+    </div>
+}
+@* NEW: Similar Movies Section *@
+@if (similarMovies.Any())
+{
+    <div class="similar-movies-section">
+        <h3>Similar Movies</h3>
+        <div class="movie-grid">
+            @foreach (var similarMovie in similarMovies)
+            {
+                <a href="@($"movie/{similarMovie.Id}")" class="movie-link">
+                    <div class="movie-card">
+                        @if (string.IsNullOrEmpty(similarMovie.PosterPath))
+                        {
+                            <div class="no-poster">No Image</div>
+                        }
+                        else
+                        {
+                            <img src="@($"https://image.tmdb.org/t/p/w500/{similarMovie.PosterPath}")" alt="@similarMovie.Title" />
+                        }
+                        <h5>@similarMovie.Title</h5>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+}
+
+<style>
+    .movie-details-container {
+        display: flex;
+        gap: 30px;
+    }
+
+    .movie-poster {
+        flex-basis: 300px;
+        flex-shrink: 0;
+    }
+
+        .movie-poster img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+    .movie-info h1 {
+        margin-top: 0;
+    }
+
+        .movie-info h1 span {
+            color: #666;
+            font-weight: normal;
+        }
+
+    .info-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+        .info-badges span {
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+
+    .rating {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        text-decoration: none;
+    }
+
+    .similar-movies-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+    }
+
+    /* A style for movies that don't have a poster image */
+    .no-poster {
+        height: 300px;
+        background-color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        border-radius: 8px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int MovieId { get; set; }
+
+    // Our existing property for the main movie's details
+    private MovieDetail? movie;
+
+    // NEW: A list to hold the recommendations
+    private List<Movie> similarMovies = new();
+
+    // !!! IMPORTANT: You need your API Key here too !!!
+    private string apiKey = "01e36c2ef3033c34ac637091981746c3";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // We'll create two "tasks" to run at the same time.
+        // One to get the main details, and one to get the similar movies.
+        var movieDetailTask = Http.GetFromJsonAsync<MovieDetail>($"https://api.themoviedb.org/3/movie/{MovieId}?api_key={apiKey}");
+        var similarMoviesTask = Http.GetFromJsonAsync<MovieSearchResult>($"https://api.themoviedb.org/3/movie/{MovieId}/similar?api_key={apiKey}");
+
+        // Task.WhenAll is like sending two messengers at once and waiting for both to return.
+        await Task.WhenAll(movieDetailTask, similarMoviesTask);
+
+        movie = movieDetailTask.Result;
+        similarMovies = similarMoviesTask.Result?.Results ?? new List<Movie>();
+    }
+}

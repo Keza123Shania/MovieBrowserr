@@ -1,0 +1,25 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.top-nav-bar {
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #333;
+    padding: 0.5rem 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* This pushes the two items apart */
+}
+
+.content {
+    padding: 2rem;
+    flex-grow: 1; /* Allows the main content area to take up all remaining vertical space */
+}
+.top-right-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* This adds some nice spacing between the About and Login links */
+}

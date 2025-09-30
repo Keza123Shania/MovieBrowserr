@@ -1,0 +1,38 @@
+.top-menu-container {
+    display: flex;
+    justify-content: space-between; /* Pushes items to the edges */
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+    .nav-link.active {
+        color: white;
+        background-color: #333;
+    }
+
+/* We need to re-style the About button to fit the new theme */
+.user-controls .nav-link {
+    background-color: #3a3a3a;
+    color: white;
+    border: 1px solid #555;
+}
